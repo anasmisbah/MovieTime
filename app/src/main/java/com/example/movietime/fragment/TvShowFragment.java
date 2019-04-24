@@ -7,9 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.movietime.BuildConfig;
@@ -35,6 +39,10 @@ public class TvShowFragment extends Fragment {
     ProgressBar progressBar;
     @BindView(R.id.tvshow_recycler)
     RecyclerView recyclerView;
+    @BindView(R.id.et_search_tvshow)
+    EditText etSearchTvShow;
+    @BindView(R.id.btn_search_tvshow)
+    Button btnSearchTvShow;
     private ArrayList<Movie> movieArrayList = new ArrayList<>();
     private ApiInterface apiInterface;
     private final String TVSHOW_LIST = "TVSHOW_LIST";
@@ -88,6 +96,52 @@ public class TvShowFragment extends Fragment {
                 }
             });
         }
+
+        btnSearchTvShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.INVISIBLE);
+                String key = etSearchTvShow.getText().toString();
+                if (TextUtils.isEmpty(key)){
+                    Call<MovieResponse> call = apiInterface.getTvShows(BuildConfig.api_key);
+                    call.enqueue(new Callback<MovieResponse>() {
+                        @Override
+                        public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                            movieArrayList = response.body().getMovies();
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                            movieAdapter.setMovieArrayList(movieArrayList);
+                            recyclerView.setAdapter(movieAdapter);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFailure(Call<MovieResponse> call, Throwable t) {
+                            Log.e("ERROR", "onFailure: " + t);
+                        }
+                    });
+                }else {
+                    Call<MovieResponse> call = apiInterface.SearchItem("tv",BuildConfig.api_key,key);
+                    call.enqueue(new Callback<MovieResponse>() {
+                        @Override
+                        public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                            movieArrayList = response.body().getMovies();
+                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                            movieAdapter.setMovieArrayList(movieArrayList);
+                            recyclerView.setAdapter(movieAdapter);
+                            progressBar.setVisibility(View.INVISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onFailure(Call<MovieResponse> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+        });
 
 
     }
