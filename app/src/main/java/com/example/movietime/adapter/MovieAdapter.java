@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,11 +52,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.CardViewHold
     public void onBindViewHolder(@NonNull CardViewHolder cardViewHolder, int i) {
 
         Movie movie = getMovieArrayList().get(i);
+
+        cardViewHolder.cardView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale));
         if (movie.getTitle() != null) {
             cardViewHolder.textViewTitle.setText(movie.getTitle());
         } else if (movie.getName() != null) {
             cardViewHolder.textViewTitle.setText(movie.getName());
         }
+
 
         Picasso.get().load("https://image.tmdb.org/t/p/w154/" + movie.getPoster()).into(cardViewHolder.imageViewPoster);
         String vote_average = new DecimalFormat("##.##").format(movie.getVoteAverage());

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.movietime.R;
+import com.example.movietime.fragment.FavoriteFragment;
 import com.example.movietime.fragment.MoviesFragment;
 import com.example.movietime.fragment.TvShowFragment;
 
@@ -65,8 +66,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Intent Localintent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-        startActivity(Localintent);
+        switch (item.getItemId()){
+            case R.id.setting_language:
+                Intent Localintent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                startActivity(Localintent);
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -83,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
                     setCurrentFragment(new TvShowFragment());
                     setTitle(getString(R.string.tv_show));
                     break;
+                case R.id.nav_favorite:
+                    setCurrentFragment(new FavoriteFragment());
+                    setTitle(getString(R.string.favorite));
             }
             return true;
         }

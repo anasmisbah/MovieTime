@@ -17,4 +17,7 @@ public interface ApiInterface {
 
     @GET("tv/airing_today")
     Call<MovieResponse> getTvShows(@Query("api_key") String apikey);
+
+    @GET("search/{category}")
+    Call<MovieResponse> SearchItem(@Path("category") String category,@Query("api_key") String apikey,@Query("query") String title);
 }

@@ -9,4 +9,7 @@
     <string name="release_date">Tanggal Rilis</string>
     <string name="genres">Genre</string>
     <string name="setting_language">Atur Bahasa</string>
+    <string name="favorite">kesukaan</string>
+    <string name="info_deleted">berhasil dihapus dari daftar kesukaan</string>
+    <string name="info_added">berhasil ditambahkan ke dalam daftar kesukaan</string>
 </resources>

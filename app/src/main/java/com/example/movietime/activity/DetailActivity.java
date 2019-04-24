@@ -1,8 +1,14 @@
 package com.example.movietime.activity;
 
+import android.arch.persistence.room.Room;
+import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -10,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.movietime.BuildConfig;
 import com.example.movietime.R;
+import com.example.movietime.database.MovieDatabase;
 import com.example.movietime.model.Genre;
 import com.example.movietime.model.Movie;
 import com.example.movietime.service.ApiClient;
@@ -53,6 +60,9 @@ public class DetailActivity extends AppCompatActivity {
     private Movie movieApi;
     private String detailCurrent;
     private final String DETAIL_SAVE = "DETAIL_SAVE";
+    private Menu menu;
+    private MovieDatabase movieDatabase;
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +70,26 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        final Movie movie;
 
+        movieDatabase = Room.databaseBuilder(getApplicationContext(), MovieDatabase.class, "FavoriteDB").allowMainThreadQueries().build();
         movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
         progressBar.setVisibility(View.VISIBLE);
         if (movie.getTitle() != null) {
             textViewTitle.setText(movie.getTitle());
-            textViewTglRilis.setText(movie.getReleaseDate());
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(movie.getTitle());
             }
             detailCurrent = "movie";
+
         } else if (movie.getName() != null) {
             textViewTitle.setText(movie.getName());
-            textViewTglRilis.setText(movie.getFirstAirDate());
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle(movie.getName());
             }
             detailCurrent = "tv";
         }
 
+        movie.setCategory(detailCurrent);
         String vote_average = new DecimalFormat("##.##").format(movie.getVoteAverage());
         textViewVote.setText(vote_average);
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -90,6 +100,12 @@ public class DetailActivity extends AppCompatActivity {
             Picasso.get().load("https://image.tmdb.org/t/p/w500/" + movieApi.getBackdrop()).into(backdrop);
             textViewLanguage.setText(movieApi.getLanguage());
             textViewOverview.setText(movieApi.getOverview());
+            if (movie.getTitle() != null) {
+                textViewTglRilis.setText(movieApi.getReleaseDate());
+
+            } else if (movie.getName() != null) {
+                textViewTglRilis.setText(movieApi.getFirstAirDate());
+            }
             String detailgenre = "";
             ArrayList<Genre> genres = movieApi.getGenres();
             for (Genre genre : genres) {
@@ -113,7 +129,14 @@ public class DetailActivity extends AppCompatActivity {
                         detailgenre = detailgenre + genre.getNamegenre() + " ";
                     }
                     textViewDetailGenres.setText(detailgenre);
+                    if (movie.getTitle() != null) {
+                        textViewTglRilis.setText(movieApi.getReleaseDate());
+
+                    } else if (movie.getName() != null) {
+                        textViewTglRilis.setText(movieApi.getFirstAirDate());
+                    }
                     progressBar.setVisibility(View.INVISIBLE);
+                    new CheckFavorite().execute();
                 }
 
                 @Override
@@ -123,11 +146,70 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
 
+
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(DETAIL_SAVE, movieApi);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.favorite_menu, menu);
+        this.menu = menu;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.up_favorite:
+                if (movie.getFavorite()) {
+                    item.setIcon(R.drawable.ic_favorite_white_24dp);
+                    movieDatabase.getMovieDAO().deleteFavorite(movie);
+                    Snackbar.make(getWindow().getDecorView().getRootView(), getResources().getString(R.string.info_deleted), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    item.setIcon(R.drawable.ic_favorite_black);
+                    movieDatabase.getMovieDAO().addFavorite(movie);
+                    Snackbar.make(getWindow().getDecorView().getRootView(), getResources().getString(R.string.info_added), Snackbar.LENGTH_SHORT).show();
+                }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
+    private class CheckFavorite extends AsyncTask<Void, Void, Movie> {
+
+
+        @Override
+        protected Movie doInBackground(Void... voids) {
+            Movie movieget = movieDatabase.getMovieDAO().getFavorite(movie.getId());
+            return movieget;
+        }
+
+        @Override
+        protected void onPostExecute(Movie moviePost) {
+            super.onPostExecute(moviePost);
+            if (moviePost != null) {
+                menu.getItem(0).setIcon(R.drawable.ic_favorite_black);
+                movie.setFavorite(true);
+            }
+        }
     }
 }
