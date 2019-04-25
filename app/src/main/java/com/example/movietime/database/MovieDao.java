@@ -25,4 +25,7 @@ public interface MovieDao {
     @Query("SELECT * FROM favorite WHERE id ==:favoriteId")
     public Movie getFavorite(int favoriteId);
 
+    @Query("SELECT * FROM favorite")
+    public List<Movie> getAllFavorites();
+
 }

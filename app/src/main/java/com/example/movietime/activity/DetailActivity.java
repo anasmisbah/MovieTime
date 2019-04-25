@@ -1,6 +1,7 @@
 package com.example.movietime.activity;
 
 import android.arch.persistence.room.Room;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.example.movietime.model.Genre;
 import com.example.movietime.model.Movie;
 import com.example.movietime.service.ApiClient;
 import com.example.movietime.service.ApiInterface;
+import com.example.movietime.widget.FavoriteWidget;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -32,6 +34,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.movietime.widget.FavoriteWidget.UPDATE_ACTION;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -177,7 +181,11 @@ public class DetailActivity extends AppCompatActivity {
                     movieDatabase.getMovieDAO().addFavorite(movie);
                     Snackbar.make(getWindow().getDecorView().getRootView(), getResources().getString(R.string.info_added), Snackbar.LENGTH_SHORT).show();
                 }
+                break;
         }
+        Intent updateFavoriteWidget = new Intent(this, FavoriteWidget.class);
+        updateFavoriteWidget.setAction(UPDATE_ACTION);
+        sendBroadcast(updateFavoriteWidget);
 
         return super.onOptionsItemSelected(item);
     }

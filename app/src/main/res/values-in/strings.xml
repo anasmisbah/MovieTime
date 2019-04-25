@@ -17,4 +17,6 @@
     <string name="search">pencarian</string>
     <string name="appwidget_text">Contoh</string>
     <string name="add_widget">tambah widget</string>
+    <string name="my_favorite">kesukaan saya</string>
+    <string name="empty_favorite">data kosong</string>
 </resources>

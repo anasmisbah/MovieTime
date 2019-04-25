@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:id="@+id/img_widget"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_preview"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Captain America"
+        android:textSize="24sp"
+        android:layout_gravity="bottom"
+        android:textColor="@android:color/white"
+        android:background="#BF000000"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textAlignment="center"
+        android:id="@+id/tv_title_widget"
+        />
+</FrameLayout>
