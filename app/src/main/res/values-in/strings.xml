@@ -12,4 +12,9 @@
     <string name="favorite">kesukaan</string>
     <string name="info_deleted">berhasil dihapus dari daftar kesukaan</string>
     <string name="info_added">berhasil ditambahkan ke dalam daftar kesukaan</string>
+
+    //widget punya
+    <string name="search">pencarian</string>
+    <string name="appwidget_text">Contoh</string>
+    <string name="add_widget">tambah widget</string>
 </resources>
