@@ -19,4 +19,20 @@
     <string name="add_widget">tambah widget</string>
     <string name="my_favorite">kesukaan saya</string>
     <string name="empty_favorite">data kosong</string>
+    <string name="setting_notification">atur notifikasi</string>
+
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="daily_reminder">pengingat harian</string>
+    <string name="info_daily">akan memberikan notifkasi setiap jam 8 pagi</string>
+    <string name="release_movie_reminder">pengingat movie rilis</string>
+    <string name="info_release">akan memberikan notifikasi apabila terdapat film baru rilis hari ini</string>
+
+    <string name="notif_release_content_title">Pengingat film rilis harian</string>
+    <string name="notif_release_content_text">tidak ada film rilis hari ini </string>
+    <string name="notif_release_content_text_movie">film %s telah rilis</string>
+    <string name="notif_daily_content_title">Pengingat Harian</string>
+    <string name="notif_daily_content_text">Movie time Kangen kamu</string>
+    <string name="notif_daily_setup">pengingat harian anda telah %s</string>
+    <string name="notif_release_setup">pengingat rilis movie harian anda telah %s</string>
 </resources>

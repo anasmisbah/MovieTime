@@ -4,6 +4,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -68,6 +69,29 @@ public class Movie implements Parcelable {
 
     @Ignore
     private Boolean favorite = false;
+
+    public static Movie fromContentValues(ContentValues values){
+        final Movie movie = new Movie();
+        if (values.containsKey("id")){
+            movie.id = values.getAsInteger("id");
+        }
+        if (values.containsKey("name")){
+            movie.name = values.getAsString("name");
+        }
+        if (values.containsKey("original_title")){
+            movie.title = values.getAsString("original_title");
+        }
+        if (values.containsKey("vote_average")){
+            movie.voteAverage = values.getAsDouble("vote_average");
+        }
+        if (values.containsKey("poster_path")){
+            movie.poster = values.getAsString("poster_path");
+        }
+        if (values.containsKey("category")){
+            movie.category = values.getAsString("category");
+        }
+        return movie;
+    }
 
     protected Movie(Parcel in) {
         id = in.readInt();

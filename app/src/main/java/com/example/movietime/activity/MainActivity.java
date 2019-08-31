@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent Localintent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
                 startActivity(Localintent);
                 break;
+            case R.id.setting_notification:
+                Intent notifIntent = new Intent(this,NotificationActivity.class);
+                startActivity(notifIntent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

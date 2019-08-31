@@ -18,4 +18,18 @@
     <string name="add_widget">Add widget</string>
     <string name="my_favorite">my favorite</string>
     <string name="empty_favorite">empty_favorite</string>
+    <string name="setting_notification">setting notification</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="info_daily">will give a notification every morning at 8</string>
+    <string name="release_movie_reminder">Release Movie Reminder</string>
+    <string name="info_release">will give a notification when there is a release film</string>
+    <string name="notif_release_content_title">Release Movie Today Notification Reminder</string>
+    <string name="notif_release_content_text">There are no movie release today</string>
+    <string name="notif_release_content_text_movie">Movie %s Has Been Release</string>
+    <string name="notif_daily_content_title">Daily Notification Reminder</string>
+    <string name="notif_daily_content_text">Movie time is always missing you</string>
+    <string name="notif_daily_setup">Daily Notification Reminder is %s</string>
+    <string name="notif_release_setup">Release Movie Notification Reminder is %s</string>
 </resources>

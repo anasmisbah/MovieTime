@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.database.Cursor;
 
 import com.example.movietime.model.Movie;
 
@@ -17,7 +18,7 @@ public interface MovieDao {
     public long addFavorite(Movie movie);
 
     @Delete
-    public void deleteFavorite(Movie movie);
+    public int deleteFavorite(Movie movie);
 
     @Query("SELECT * FROM favorite WHERE category ==:category")
     public List<Movie> getFavorites(String category);
@@ -27,5 +28,14 @@ public interface MovieDao {
 
     @Query("SELECT * FROM favorite")
     public List<Movie> getAllFavorites();
+
+    @Query("SELECT * FROM favorite")
+    public Cursor getContentFavorites();
+
+    @Query("SELECT * FROM favorite WHERE id ==:favoriteId")
+    public Cursor getContentFavorite(int favoriteId);
+
+    @Query("DELETE FROM favorite WHERE id ==:id")
+    public int deleteFavoriteContent(int id);
 
 }
